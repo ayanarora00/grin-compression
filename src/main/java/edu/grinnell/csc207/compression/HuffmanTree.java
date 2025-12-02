@@ -42,7 +42,7 @@ public class HuffmanTree {
             this.freq = left.freq + right.freq;
             this.left = left;
             this.right = right;
-            this.value = (Short) null;
+            this.value = 0;
         }   
 
         // Returns true if the given node is a leaf
@@ -210,9 +210,6 @@ public class HuffmanTree {
 
         // The loop which runs while it isn't -1 which is what comes when the input stream becomes empty
         while ((bits = in.readBits(8)) != -1){
-
-            // We read the bits again, updating
-            bits = in.readBits(8);
 
             // We get the bits as a short object
             short value = (short) bits;

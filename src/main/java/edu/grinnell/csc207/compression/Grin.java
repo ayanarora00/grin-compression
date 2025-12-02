@@ -65,9 +65,6 @@ public class Grin {
         // The loop which runs while it isn't -1 which is what comes when the input stream becomes empty
         while ((bits = in.readBits(8)) != -1){
 
-            // We read in the 8 bits from the input file
-            bits = in.readBits(8);
-
             // We assign those bits to a short object
             short value = (short) bits;
 
