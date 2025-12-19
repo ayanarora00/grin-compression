@@ -139,6 +139,11 @@ public class Grin {
             System.out.println("Usage: java Grin <encode|decode> <infile> <outfile>");
         }
 
+        if (args.length == 0) {
+            System.err.println("Usage: grin <input-file>");
+            System.exit(1);
+        }
+        
         // Creating objects from the command line arguments
         String function = args[0];
         String inputfile = args[1];
