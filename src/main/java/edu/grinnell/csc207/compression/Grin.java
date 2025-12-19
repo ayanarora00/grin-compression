@@ -15,7 +15,7 @@ public class Grin {
      * @param outfile the file to ouptut to
      * @throws IOException 
      */
-    public static void decode (String infile, String outfile) throws IOException {
+    public static void decode(String infile, String outfile) throws IOException {
         
         // Creating input stream and output stream objects reading in the files
         BitInputStream in = new BitInputStream(infile);
@@ -51,7 +51,7 @@ public class Grin {
      * @return a freqency map for the given file
      * @throws IOException 
      */
-    public static Map<Short, Integer> createFrequencyMap (String file) throws IOException {
+    public static Map<Short, Integer> createFrequencyMap(String file) throws IOException {
 
         // Creating a map object
         Map<Short, Integer> freqs = new HashMap<>();

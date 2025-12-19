@@ -217,7 +217,7 @@ public class HuffmanTree {
      * @param in the file to compress.
      * @param out the file to write the compressed output to.
      */
-    public void encode (BitInputStream in, BitOutputStream out) throws IllegalStateException {
+    public void encode(BitInputStream in, BitOutputStream out) throws IllegalStateException {
 
         // Declaring an int object to read the 8 bits
         int bits;
@@ -232,7 +232,7 @@ public class HuffmanTree {
             // We call the find helper to get the huffman code for that value
             String huffmanCode = find(first, value, "");
 
-            if (huffmanCode == null){
+            if (huffmanCode == null) {
                 throw new IllegalStateException();
             }
 
@@ -243,7 +243,7 @@ public class HuffmanTree {
             // according to what is in the char array
             // corresponding to the huffman code
             for (int i = 0; i < codeArray.length; i++) {
-                if (codeArray[i] == '0'){
+                if (codeArray[i] == '0') {
                     out.writeBit(0);
                 } else {
                     out.writeBit(1);
@@ -258,10 +258,10 @@ public class HuffmanTree {
         // to write it to the out file:
 
         // We call the find helper to get the huffman code for the EOF
-        String EOF = find(first, eof, "");
+        String eOF = find(first, eof, "");
 
         // We translate that code string into a character array
-        char[] eofArray = EOF.toCharArray();
+        char[] eofArray = eOF.toCharArray();
 
         // We then traverse it and write the bits 
         // into the out file according to what is in the char array
@@ -328,7 +328,7 @@ public class HuffmanTree {
      * @param in the file to decompress.
      * @param out the file to write the decompressed output to.
      */
-    public void decode (BitInputStream in, BitOutputStream out) {
+    public void decode(BitInputStream in, BitOutputStream out) {
         
         // We set current (the node we use to traverse the tree) to the root of our tree
         // Effectively assigning the entire tree to current
@@ -342,7 +342,7 @@ public class HuffmanTree {
         while ((bit = in.readBit()) != -1) {
 
             // If the bit read is 0
-            if (bit == 0){
+            if (bit == 0) {
                 // We go to the left
                 current = current.left;
 

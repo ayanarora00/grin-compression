@@ -22,7 +22,9 @@ public class BitInputStream {
     }
 
     /** @return true iff the stream has bits left to produce */
-    public boolean hasBits() { return digits != -1;}
+    public boolean hasBits() {
+        return digits != -1;
+    }
 
     /**
      * Reads a bit from the stream in big-endian order (msb first)
@@ -31,10 +33,14 @@ public class BitInputStream {
      **/
     public int readBit() {
         // if at eof, return -1
-        if (digits == -1) { return -1;}
+        if (digits == -1) {
+            return -1;
+        }
         int result = (digits & (1 << cursor)) >> cursor;
         cursor--;
-        if (cursor < 0) { nextByte();}
+        if (cursor < 0) {
+            nextByte();
+        }
         return result;
     }
 
@@ -42,7 +48,7 @@ public class BitInputStream {
      * Reads a number of bits in big-endian order (msb first)
      * @param n the number of bits to read (0--32)
      * @return the next n bits of the stream packed in a single integer or -1
-     *         if the stream runs out of data
+     * if the stream runs out of data
      */
     public int readBits(int n) {
         int ret = 0;
