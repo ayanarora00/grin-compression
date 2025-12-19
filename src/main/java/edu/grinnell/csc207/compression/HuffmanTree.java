@@ -21,7 +21,7 @@ public class HuffmanTree {
     private short eof = 256;
 
     // Implementing the Node Class for the Huffman Tree nodes
-    private static class Node implements Comparable<Node>{
+    private static class Node implements Comparable <Node> {
 
         // Declaring the variables
         int freq;
@@ -46,11 +46,12 @@ public class HuffmanTree {
         }   
 
         // Returns true if the given node is a leaf
-        public boolean isleaf(){
+        public boolean isleaf() {
             return this.left == null && this.right == null;
         }
 
-        // Compares the given node's frequency to the other node's (the one given as argument) frequency
+        // Compares the given node's frequency to the other node's
+        // (the one given as argument) frequency
         @Override
         public int compareTo(Node o) {
             return Integer.compare(this.freq, o.freq);
@@ -75,11 +76,12 @@ public class HuffmanTree {
         // Creating the PriorityQueue to implement the HuffmanTree
         PriorityQueue queue = new PriorityQueue<>();
 
-        // The following instructions for creating the Huffman Tree come from the wikipedia page I referenced to
+        // The following instructions for creating the Huffman Tree 
+        // come from the wikipedia page I referenced to
         // understand the tree and it's structure
 
         // 1 . Create a leaf node for each symbol and add it to the priority queue.
-        for (short key : freqs.keySet()){
+        for (short key : freqs.keySet()) {
 
             // Getting the frequency that maps to each key 
             int freq = freqs.get(key);
@@ -93,21 +95,26 @@ public class HuffmanTree {
         }
 
         // 2 . While there is more than one node in the queue:
-        //     Remove the two nodes of highest priority (lowest probability) from the queue
-        //     Create a new internal node with these two nodes as children and with probability 
+        //     Remove the two nodes of highest priority (lowest probability)
+        //     from the queue
+        //     Create a new internal node with these two nodes as children 
+        //     and with probability 
         //     equal to the sum of the two nodes' probabilities.
         //     Add the new node to the queue.
-        while (queue.size() > 1){
+        while (queue.size() > 1) {
 
-            // Referenced java documentation to see what poll() function associated with Priority Queues does
+            // Referenced java documentation to see what poll()
+            //  function associated with Priority Queues does
 
-            // Getting the two nodes of highest priority (given by poll which returns the node of lowest probability,
+            // Getting the two nodes of highest priority 
+            // (given by poll which returns the node of lowest probability,
             // consistent with the structure of priority queues)
 
             // First node (highets priority)
             Node smallest = (Node) queue.poll();
 
-            // Now that the first node is taken out, the second highest priority node is returned this time
+            // Now that the first node is taken out, 
+            // the second highest priority node is returned this time
             Node smallest2 = (Node) queue.poll();
 
             // Creating an internal node with the 2 nodes taken above as it's subtrees
@@ -129,32 +136,37 @@ public class HuffmanTree {
      */
     public HuffmanTree (BitInputStream in) {
 
-        // We assign the root of our Huffman tree to what we construct through reading in the file 
+        // We assign the root of our Huffman tree to 
+        // what we construct through reading in the file 
         // from inputhelper
         this.first = inputhelper(in);
 
     }
 
     /**
-     * Helper to construct a new HuffmanTree from the given file. Constructs the tree and then the actual function assigns
-     * our declared root of the tree to this tree we create with the helper
+     * Helper to construct a new HuffmanTree from the given file.
+     * Constructs the tree and then the actual function assigns
+     * our declared root of the tree to this tree
+     * we create with the helper
      * 
      * @param in the input file (as a BitInputStream)
      * @return nothing
      */
-    public Node inputhelper(BitInputStream in){
+    public Node inputhelper(BitInputStream in) {
 
         // We read a bit
         int bit = in.readBit();
 
         // If the bit is 0, it is a leaf and 
-        // we get the value from the next 9 bits and create a leaf node with frequency 0 and that value
-        if (bit == 0){
+        // we get the value from the next 9 bits and 
+        // create a leaf node with frequency 0 and that value
+        if (bit == 0) {
             int value = in.readBits(9);
             return new Node(0, (short) value);
 
         // If it is 1, it is an internal node and we construct it by 
-        // calling inputhelper recursively to get the left and right nodes and then creating the internal node using them
+        // calling inputhelper recursively to get the left and right nodes
+        // and then creating the internal node using them
         } else {
             Node left = inputhelper(in);
             Node right = inputhelper(in);
@@ -180,14 +192,16 @@ public class HuffmanTree {
      * @param out the output file as a BitOutputStream
      * @param node the Current Node we start the tree traversal with
      */
-    public void serial_helper(Node node, BitOutputStream out){
+    public void serial_helper(Node node, BitOutputStream out) {
 
-        // If the node is a leaf, we write a 0 bit and then 9 bits corresponding to the byte value stored at the leaf.
-        if (node.isleaf()){
+        // If the node is a leaf, we write a 0 bit and then 9 bits 
+        // corresponding to the byte value stored at the leaf.
+        if (node.isleaf()) {
             out.writeBit(0);
             out.writeBits(node.value, 9);
 
-        // If the node is an interior node, we write a 1 bit and then recursively write the left and right children of this node
+        // If the node is an interior node, we write a 1 bit and 
+        // then recursively write the left and right children of this node
         } else {
             out.writeBit(1);
             serial_helper(node.left, out);
@@ -203,13 +217,14 @@ public class HuffmanTree {
      * @param in the file to compress.
      * @param out the file to write the compressed output to.
      */
-    public void encode (BitInputStream in, BitOutputStream out) throws IllegalStateException{
+    public void encode (BitInputStream in, BitOutputStream out) throws IllegalStateException {
 
         // Declaring an int object to read the 8 bits
         int bits;
 
-        // The loop which runs while it isn't -1 which is what comes when the input stream becomes empty
-        while ((bits = in.readBits(8)) != -1){
+        // The loop which runs while it isn't -1 which is
+        // what comes when the input stream becomes empty
+        while ((bits = in.readBits(8)) != -1) {
 
             // We get the bits as a short object
             short value = (short) bits;
@@ -224,9 +239,10 @@ public class HuffmanTree {
             // We translate that code string into a character array
             char[] code_arr = huffman_code.toCharArray();
 
-            // We then traverse it and write the bits into the out file according to what is in the char array
+            // We then traverse it and write the bits into the out file 
+            // according to what is in the char array
             // corresponding to the huffman code
-            for (int i = 0; i < code_arr.length; i++){
+            for (int i = 0; i < code_arr.length; i++) {
                 if (code_arr[i] == '0'){
                     out.writeBit(0);
                 } else {
@@ -237,7 +253,8 @@ public class HuffmanTree {
 
         }
 
-        // After writing everything, we try to find the code for the EOF character and repeat the same process
+        // After writing everything, we try to find the code 
+        // for the EOF character and repeat the same process
         // to write it to the out file:
 
         // We call the find helper to get the huffman code for the EOF
@@ -246,9 +263,10 @@ public class HuffmanTree {
         // We translate that code string into a character array
         char[] EOF_arr = EOF.toCharArray();
 
-        // We then traverse it and write the bits into the out file according to what is in the char array
+        // We then traverse it and write the bits 
+        // into the out file according to what is in the char array
         // corresponding to the huffman code
-        for (int i = 0; i < EOF_arr.length; i++){
+        for (int i = 0; i < EOF_arr.length; i++) {
             if (EOF_arr[i] == '0'){
                 out.writeBit(0);
             } else {
@@ -265,32 +283,35 @@ public class HuffmanTree {
      * @param binary the string in which we return the huffmancode
      * 
      */
-    public String find(Node node, short value, String binary){
+    public String find(Node node, short value, String binary) {
 
         // If the node is null, we simply return null
         if (node == null){
             return null;
         }
 
-        // If it is a leaf and it's value is equal to the value whose corresponding huffman code we want to find,
+        // If it is a leaf and it's value is equal to the value 
+        // whose corresponding huffman code we want to find,
         // we return the string
         if (node.isleaf()){
-            if (node.value == value){
+            if (node.value == value) {
                 return binary;
             }
         }
 
-        // Otherwise, we recursively repeat the process over the left and right nodes of the internal node
+        // Otherwise, we recursively repeat the process over the
+        // left and right nodes of the internal node
         // (given it isn't null and it isn't a leaf)
 
-        // For the left string, we add a "0" to binary whereas for the right string we add a "1"
+        // For the left string, we add a "0" to binary whereas 
+        // for the right string we add a "1"
         String left = find(node.left, value, binary + "0");
-        if (left != null){
+        if (left != null) {
             return left;
         }
 
         String right = find(node.right, value, binary + "1");
-        if (right != null){
+        if (right != null) {
             return right;
         }
 
@@ -315,8 +336,9 @@ public class HuffmanTree {
         // We declare an int object for reading in the bit
         int bit;
 
-        // While we don't read in -1 (which is what comes when the input stream becomes empty)
-        while ((bit = in.readBit()) != -1){
+        // While we don't read in -1
+        // (which is what comes when the input stream becomes empty)
+        while ((bit = in.readBit()) != -1) {
 
             // If the bit read is 0
             if (bit == 0){
@@ -329,17 +351,18 @@ public class HuffmanTree {
             }
 
             // If the node we eventually reach is a leaf:
-            if (current.isleaf()){
+            if (current.isleaf()) {
 
                 // We break if it is an eof character
-                if (current.value == eof){
+                if (current.value == eof) {
                     break;
 
                 // If not, we write out the value of the current node as 8 bits
                 } else {
                     out.writeBits(current.value, 8);
 
-                    // Current gets reassigned to first for traversal (but the bits have moved forward)
+                    // Current gets reassigned to first for traversal
+                    // (but the bits have moved forward)
                     // Now, we basically repeat the process for the next element
                     current = first;
                 }

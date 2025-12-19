@@ -25,7 +25,7 @@ public class Grin {
         int magic = in.readBits(32); 
 
         // Checking if it corresponds to what it is supposed to be
-        if (magic != 0x736){
+        if (magic != 0x736) {
             in.close();
             out.close();
         }
@@ -62,8 +62,9 @@ public class Grin {
         // Creating input stream object
         BitInputStream in = new BitInputStream(file);
 
-        // The loop which runs while it isn't -1 which is what comes when the input stream becomes empty
-        while ((bits = in.readBits(8)) != -1){
+        // The loop which runs while it isn't -1 which is what comes
+        //  when the input stream becomes empty
+        while ((bits = in.readBits(8)) != -1) {
 
             // We assign those bits to a short object
             short value = (short) bits;
@@ -71,8 +72,9 @@ public class Grin {
             // We get count of that value from the map
             Integer count = freqs.get(value);
 
-            // If the count value is null, we then put an entry into the map with value as key and count as 1
-            if (count == null){
+            // If the count value is null, 
+            // we then put an entry into the map with value as key and count as 1
+            if (count == null) {
                 freqs.put(value, 1);
 
             // Otherwise, we put with the existing count incremented by 1
@@ -115,7 +117,8 @@ public class Grin {
         // Serializing the huffman tree to write it to out
         huffmantree.serialize(out);
 
-        // Using the huffman tree to encode the in file and write the compressed version to the out file
+        // Using the huffman tree to encode the in file
+        // and write the compressed version to the out file
         huffmantree.encode(in, out);
 
         // Closing both the infile and outfile
@@ -132,7 +135,7 @@ public class Grin {
     public static void main(String[] args) throws IOException {
         
         // Checking for irregularities in command line arguments passed
-        if (args.length != 3){
+        if (args.length != 3) {
             System.out.println("Usage: java Grin <encode|decode> <infile> <outfile>");
         }
 
@@ -142,15 +145,15 @@ public class Grin {
         String outputfile = args[2];
 
         // If the function to carry out is encode, we encode the in file to the out file
-        if (function.equals("encode")){
+        if (function.equals("encode")) {
             encode(inputfile, outputfile);
 
         // If it is decode, we decode the in file to the out file
-        } else if (function.equals("decode")){
+        } else if (function.equals("decode")) {
             decode(inputfile, outputfile);
 
-        // If not either, we print out a guiding message as to how to use the program and what the function argument
-        // requires
+        // If not either, we print out a guiding message as 
+        // to how to use the program and what the function argument requires
         } else {
             System.out.println("Usage: java Grin <encode|decode> <infile> <outfile>");
         }
