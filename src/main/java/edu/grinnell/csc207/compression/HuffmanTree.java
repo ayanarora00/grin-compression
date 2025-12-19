@@ -21,7 +21,7 @@ public class HuffmanTree {
     private short eof = 256;
 
     // Implementing the Node Class for the Huffman Tree nodes
-    private static class Node implements Comparable <Node> {
+    private static class Node implements Comparable<Node> {
 
         // Declaring the variables
         int freq;
@@ -68,7 +68,7 @@ public class HuffmanTree {
      * Constructs a new HuffmanTree from a frequency map.
      * @param freqs a map from 9-bit values to frequencies.
      */
-    public HuffmanTree (Map<Short, Integer> freqs) {
+    public HuffmanTree(Map<Short, Integer> freqs) {
         
         // Putting the eof into the frequency map
         freqs.put(eof, 1);
@@ -134,7 +134,7 @@ public class HuffmanTree {
      * Constructs a new HuffmanTree from the given file.
      * @param in the input file (as a BitInputStream)
      */
-    public HuffmanTree (BitInputStream in) {
+    public HuffmanTree(BitInputStream in) {
 
         // We assign the root of our Huffman tree to 
         // what we construct through reading in the file 
@@ -180,10 +180,10 @@ public class HuffmanTree {
      * serialized format.
      * @param out the output file as a BitOutputStream
      */
-    public void serialize (BitOutputStream out) {
+    public void serialize(BitOutputStream out) {
 
         // We pass in out and first (the root node we start the tree traversal with)
-        serial_helper(first, out);
+        serialHelper(first, out);
     }
 
     /**
@@ -192,7 +192,7 @@ public class HuffmanTree {
      * @param out the output file as a BitOutputStream
      * @param node the Current Node we start the tree traversal with
      */
-    public void serial_helper(Node node, BitOutputStream out) {
+    public void serialHelper(Node node, BitOutputStream out) {
 
         // If the node is a leaf, we write a 0 bit and then 9 bits 
         // corresponding to the byte value stored at the leaf.
@@ -204,8 +204,8 @@ public class HuffmanTree {
         // then recursively write the left and right children of this node
         } else {
             out.writeBit(1);
-            serial_helper(node.left, out);
-            serial_helper(node.right, out);
+            serialHelper(node.left, out);
+            serialHelper(node.right, out);
         }
     
     }
@@ -230,20 +230,20 @@ public class HuffmanTree {
             short value = (short) bits;
 
             // We call the find helper to get the huffman code for that value
-            String huffman_code = find(first, value, "");
+            String huffmanCode = find(first, value, "");
 
-            if (huffman_code == null){
+            if (huffmanCode == null){
                 throw new IllegalStateException();
             }
 
             // We translate that code string into a character array
-            char[] code_arr = huffman_code.toCharArray();
+            char[] codeArray = huffmanCode.toCharArray();
 
             // We then traverse it and write the bits into the out file 
             // according to what is in the char array
             // corresponding to the huffman code
-            for (int i = 0; i < code_arr.length; i++) {
-                if (code_arr[i] == '0'){
+            for (int i = 0; i < codeArray.length; i++) {
+                if (codeArray[i] == '0'){
                     out.writeBit(0);
                 } else {
                     out.writeBit(1);
@@ -261,13 +261,13 @@ public class HuffmanTree {
         String EOF = find(first, eof, "");
 
         // We translate that code string into a character array
-        char[] EOF_arr = EOF.toCharArray();
+        char[] eofArray = EOF.toCharArray();
 
         // We then traverse it and write the bits 
         // into the out file according to what is in the char array
         // corresponding to the huffman code
-        for (int i = 0; i < EOF_arr.length; i++) {
-            if (EOF_arr[i] == '0'){
+        for (int i = 0; i < eofArray.length; i++) {
+            if (eofArray[i] == '0') {
                 out.writeBit(0);
             } else {
                 out.writeBit(1);
@@ -281,19 +281,20 @@ public class HuffmanTree {
      * @param node the node we traverse the Huffman tree with to find the value
      * @param value the value whose equivalent Huffman Code needs to be found
      * @param binary the string in which we return the huffmancode
+     * @return huffman code as a string
      * 
      */
     public String find(Node node, short value, String binary) {
 
         // If the node is null, we simply return null
-        if (node == null){
+        if (node == null) {
             return null;
         }
 
         // If it is a leaf and it's value is equal to the value 
         // whose corresponding huffman code we want to find,
         // we return the string
-        if (node.isleaf()){
+        if (node.isleaf()) {
             if (node.value == value) {
                 return binary;
             }
